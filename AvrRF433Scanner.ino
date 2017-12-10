@@ -3,6 +3,8 @@
 #include "kiss_proto.h"
 #include "cdcios.h"
 
+// To Test speed uncoment desire line
+
 KissFramer coder;
 cdc_ios     tty;
 
