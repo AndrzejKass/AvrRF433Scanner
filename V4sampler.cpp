@@ -11,7 +11,7 @@
 
 namespace ubw {
 
-static V4sampler vmeter;
+
 
 V4sampler::V4sampler() {
 	// TODO Auto-generated constructor stub
@@ -20,25 +20,35 @@ V4sampler::V4sampler() {
 
 
 
-} /* namespace ubw */
 
-void measure_devices_init() {
-	ubw::vmeter.run = false;
+void V4sampler::sampling_device_init() {
+	run = false;
 }
 
-void measure_start(void) /* enter data mode           */
+void V4sampler::sampling_start(void) /* enter data mode           */
 {
-	ubw::vmeter.run = true;
+	run = true;
 }
 
 /* stop measure, command mode */
-void measure_stop(void)
+void V4sampler::sampling_stop(void)
 {
-	ubw::vmeter.run = false;
+	run = false;
 }
+
+uint16_t V4sampler::get_sample(void)
+{
+   return RF_REC_NODATA;
+}
+
+void V4sampler::do_sampling(void) {
+  
+}
+
 
 /* send data to host          */
-void measure_data(void) {
-
-}
+//void measure_data(void) {
+//
+//}
+} /* namespace ubw */
 

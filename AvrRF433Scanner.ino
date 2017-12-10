@@ -11,7 +11,7 @@ cdc_ios     tty;
 #define DBG 1
 
 // Serial port Baudrates:
- const long Speed = 115200;
+const long Speed = 115200;
 // const int Speed = 128000;
 // const int Speed = 153600;
 // const int Speed = 230400;
@@ -32,7 +32,7 @@ void setup() {
 void tx_wait_for_all_send() {
   int k;
   int cdx;
-  for (k=0; k<128; k+=1) {
+  for (k = 0; k < 128; k += 1) {
     cdx = get_processed_output_data();
     if (cdx < 0 )
       break;
@@ -40,39 +40,60 @@ void tx_wait_for_all_send() {
   }
 }
 
+/********************************************************************
+   Function:        void ProcessIO(void)
+
+   PreCondition:    None
+
+   Input:           None
+
+   Output:          None
+
+   Side Effects:    None
+
+   Overview:        This function is a place holder for other user
+                    routines. It is a mixture of both USB and
+                    non-USB tasks.
+
+   Note:            None
+ *******************************************************************/
 void loop() {
   // put your main code here, to run repeatedly:
   int data_in;
   int data_out;
-//  digitalWrite(LED_BUILTIN, HIGH);
-//  delay(1000);
-//  digitalWrite(LED_BUILTIN, LOW);
-//  delay(1000);
+  //  digitalWrite(LED_BUILTIN, HIGH);
+  //  delay(1000);
+  //  digitalWrite(LED_BUILTIN, LOW);
+  //  delay(1000);
   if (Serial.availableForWrite() < 2) {
-    data_out = -1; 
+    data_out = -1;
   } else {
     data_out = get_processed_output_data();
   }
   if (data_out >= 0 ) {
     if (Serial.write((uint8_t)data_out) != 1) {
-        Serial.flush();
-       Serial.write((uint8_t)data_out);
+      Serial.flush();
+      Serial.write((uint8_t)data_out);
     }
   }
- 
+
+
   if (Serial.available()) {
-      data_in = Serial.read();
-      if (data_in >=0) {
+    data_in = Serial.read();
+    if (data_in >= 0) {
 #ifdef DBG
       if (data_in == '^')
-          data_in = 0xC0;
-#endif        
-        data_out = process_input_data( (uint8_t )data_in);
-        if (data_out != 0) 
-          process_cdc_data();
-        
-        
-      }
+        data_in = 0xC0;
+#endif
+      data_out = process_input_data( (uint8_t )data_in);
+      if (data_out != 0)
+        ProcessIO();
+
+
+    }
+  }
+  if ( bittst(processing_flags, PF_MEASURE_MODE) ) {
+    measure_data();
   }
 }
 

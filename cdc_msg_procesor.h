@@ -52,6 +52,9 @@ int get_processed_output_data();
 
 void tx_wait_for_all_send();
 
+// do all task for specific app
+void ProcessIO(void);
+
 #ifdef	__cplusplus
 }
 #endif

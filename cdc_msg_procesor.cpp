@@ -10,6 +10,7 @@
 
 #include "app_config.h"
 #include "cdc_msg_procesor.h"
+#include "rf_adc.h"
 
 #include "kiss_proto.h"
 #include "cdcios.h"
@@ -27,10 +28,6 @@ int get_processed_output_data() {
 	return coder.tx_read_byte();
 }
 
-
-uint16_t get_rssi() {
-	return 12;
-}
 
 void message_procesor_init(void) {
 	tty.bind(&coder);
@@ -114,3 +111,47 @@ void process_cdc_data(void) {
     coder.tx_send();
     tx_wait_for_all_send();
 }
+
+void ProcessIO(void)
+{
+
+  //Blink the LEDs according to the USB device status
+  //    BlinkUSBStatus();
+  // User Application USB tasks
+  //if ((USBDeviceState < CONFIGURED_STATE) || (USBSuspendControl == 1)) return;
+
+
+  if (coder.rx_open())
+  {
+    if (coder.rx_data_num())
+    {
+      switch (coder.rx_msg_code()) {
+        case REQ_TEXT_CMD:
+          process_cdc_data();
+          break;
+
+        case SET_TEXT_CMD:
+          process_set_nvram();
+          break;
+
+        case GET_TEXT_CMD:
+          process_get_nvram();
+          break;
+
+        default:
+          prepare_error_notify(0x301, coder.rx_msg_code());
+          coder.rx_clear();
+          coder.tx_send();
+      }
+    }
+    else 
+    {
+      //  REJECTIN SIMPLE PACKET WITHOUT PARAMS
+      coder.rx_clear();
+    }
+  }
+  //    USB_UpStream();
+  //    CDCTxService();
+}    //end ProcessIO
+
+

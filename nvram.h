@@ -15,6 +15,7 @@ public:
 	nvram();
 };
 
+
 } /* namespace ubw */
 
 #endif /* NVRAM_H_ */
