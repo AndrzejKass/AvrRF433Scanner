@@ -27,12 +27,12 @@ extern uint8_t processing_flags;
 //#define PF_ECHO_ENABLED      4
 //#define PF_ACK_ENABLED       5
 
-// podstawowe funkcjie IO
+// basic io function
 // void print_ack(void);
 // void print_crlf(void);
 // void print_echo(uint8_t cd);;
 
-/* funcion in data mode*/
+/* function in data mode*/
 void measure_devices_init(void);
 
 void measure_start(void); /* enter data mode           */

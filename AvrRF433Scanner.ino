@@ -67,7 +67,7 @@ void loop() {
       if (data_in == '^')
           data_in = 0xC0;
 #endif        
-        data_out = process_input_data( (uint8_t )data_in);
+        data_out = process_input_data( data_in);
         if (data_out != 0) 
           process_cdc_data();
         
