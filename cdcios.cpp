@@ -10,6 +10,8 @@
 cdc_ios::cdc_ios() {
 	iop = 0;
 	rx_separator = 0;
+	rx_accu = 0;
+	rx_digits = 0 ;
 }
 
 void cdc_ios:: bind(KissFramer *com) {

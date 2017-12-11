@@ -37,6 +37,8 @@ extern    void init_IOC_PB(void);
 
 
 
+void process_get_nvram(void);
+void process_set_nvram(void);
 
 
 //#define USE_PRINTF 1
