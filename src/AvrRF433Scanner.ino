@@ -11,18 +11,42 @@ cdc_ios tty;
 #define DBG 1
 
 // Serial port Baudrates:
-const long Speed = 115200;
+//  const long Speed = 115200;
 // const int Speed = 128000;
 // const int Speed = 153600;
-// const int Speed = 230400;
+// const long Speed = 230400;
 // const int Speed = 460800;
 // const int Speed = 921600;
 // const int Speed = 1500000;
 // const int Speed = 2000000;
+#define BAUD_RATE 230400
+
+#ifdef PROG_NAME
+const char *prg = PROG_NAME;
+#else
+const char *prg = "UnNamed program version";
+#endif
+
+void prog_info(void);
+
+void dump_json(const char *name, const char *key) {
+    char buf[127];
+    sprintf(buf, "\"%s\":\"%s\"", name, key);
+    Serial.print(buf);
+}
+
+void prog_info(void) {
+
+    Serial.print("\r{");
+    dump_json("ProgName", prg);
+    Serial.println("}");
+}
 
 void setup() {
 	// Initialize serial:
-	Serial.begin(Speed);
+	Serial.begin(BAUD_RATE);
+    delay(3000);
+    prog_info();
 
 	// Initialize digital pin LED_BUILTIN as an output.
 	pinMode(LED_BUILTIN, OUTPUT);
