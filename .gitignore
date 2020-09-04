@@ -28,3 +28,6 @@ core/
 .piolibdeps
 .clang_complete
 .gcc-flags.json
+.vscode/c_cpp_properties.json
+.vscode/extensions.json
+.vscode/launch.json
