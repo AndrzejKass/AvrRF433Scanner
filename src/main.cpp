@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "app_config.h"
 #include "cdc_msg_procesor.h"
 #include "kiss_proto.h"
@@ -42,6 +43,18 @@ void prog_info(void) {
     Serial.println("}");
 }
 
+void prog_info_cdc() {
+    if (coder.tx_open(INFO_TEXT_LINE) ) {
+        tty.print_msg("v[");
+        tty.print_msg(prg);
+        tty.print_msg("]");
+        coder.tx_send();
+        tx_wait_for_all_send();
+    }
+}
+
+unsigned long program_ms;
+
 void setup() {
 	// Initialize serial:
 	Serial.begin(BAUD_RATE);
@@ -51,6 +64,7 @@ void setup() {
 	// Initialize digital pin LED_BUILTIN as an output.
 	pinMode(LED_BUILTIN, OUTPUT);
 	message_procesor_init();
+	program_ms = millis();
 }
 
 void tx_wait_for_all_send() {
@@ -85,6 +99,7 @@ void loop() {
 	// put your main code here, to run repeatedly:
 	int data_in;
 	int data_out;
+
 	//  digitalWrite(LED_BUILTIN, HIGH);
 	//  delay(1000);
 	//  digitalWrite(LED_BUILTIN, LOW);
@@ -107,5 +122,9 @@ void loop() {
 
 	}
 	ProcessIO();
+	if (millis() - program_ms > 1000) {
+		program_ms += 1000;
+		prog_info_cdc();
+	}
 }
 
